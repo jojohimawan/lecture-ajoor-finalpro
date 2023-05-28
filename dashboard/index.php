@@ -1,9 +1,9 @@
 <?php
     session_start();
 
-    // if( !isset($_SESSION["login"]) ) {
-    //     header("Location: ./../auth");
-    // }
+    if( !isset($_SESSION["login"]) ) {
+        header("Location: ./../auth");
+    }
 
     require_once __DIR__ . "./../php/conn/index.php";
     require_once __DIR__ . "./../php/func/index.php";

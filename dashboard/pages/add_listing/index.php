@@ -1,13 +1,32 @@
 <?php 
     session_start();
-    // if( !isset($_SESSION["login"]) ) {
-    //     header("Location: ./../../../auth");
-    // }
+    if( !isset($_SESSION["login"]) ) {
+        header("Location: ./../../../auth");
+    }
 
-    // require_once __DIR__ . "./../../../php/conn.php";
-    // require_once __DIR__ . "./../../../php/functions.php";
-
+    require_once __DIR__ . "./../../../php/conn/index.php";
+    require_once __DIR__ . "./../../../php/func/index.php";
     
+    // get needed data
+    $categories = queryReadKategori();
+
+    // handle create produk
+    if( isset($_POST["submit"]) ) {
+        if(queryCreateProduk($_POST) > 0) {
+            echo 
+                '<script> 
+                alert("Sukses menambah produk")
+                </script>
+            ';
+        } else {
+            echo 
+                '<script> 
+                alert("Gagal menambah produk")
+                </script>
+            ';
+        }
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -111,21 +130,22 @@
             <div class="mb-6">
                 <label for="kategori" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kategori</label> <!-- kategori -->
                 <select type="text" id="kategori" name="kategori" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
-                    <?php //foreach ($kelas as $kls) : ?>
-                    <option class="text-base" value="lorem">lorem - lorem ?></option>
-                    <?php //endforeach; ?>
+                    <?php foreach ($categories as $cat) : ?>
+                    <option class="text-base" value=<?= $cat['kategori_id'] ?> ><?= $cat['nama']?></option>
+                    <?php endforeach; ?>
                 </select>
             </div>
-            <div class="flex flex-column w-full gap-x-5">
-            <label for="kategori" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipe</label> <!-- tipe -->
-            <!-- TODO: find boolean in postgre -->
-                <div class="flex items-center px-4 border border-gray-200 rounded">
-                    <input checked id="freebie" type="radio" value=true name="freebie" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
-                    <label for="kelas_1" class="w-full py-4 ml-2 text-sm font-medium text-gray-900">Freebie</label> 
-                </div>
-                <div class="flex items-center px-4 border border-gray-200 rounded">
-                    <input id="paid" type="radio" value=false name="paid" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
-                    <label for="kelas_2" class="w-full py-4 ml-2 text-sm font-medium text-gray-900">Paid</label>
+            <div class="mb-6"> 
+                <p class="mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipe</p> <!-- tipe -->
+                <div class="flex flex-column w-full gap-x-3">
+                    <div class="flex items-center px-4 border border-gray-200 rounded">
+                        <input checked id="premium" type="radio" value="f" name="gratis" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
+                        <label for="premium" class="w-full py-4 ml-2 text-sm font-medium text-gray-900">Premium</label>
+                    </div>
+                    <div class="flex items-center px-4 border border-gray-200 rounded">
+                        <input id="freebie" type="radio" value="t" name="gratis" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
+                        <label for="freebie" class="w-full py-4 ml-2 text-sm font-medium text-gray-900">Freebie</label>
+                    </div>
                 </div>
             </div>
             <div class="mb-6">
@@ -149,8 +169,8 @@
                 <input type="number" id="harga" name="harga" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             </div>
             <div class="mb-6">
-                <label for="nip" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label>
-                <input type="hidden" id="nip" name="nip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"  required>
+                <label for="userid" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label> <!-- user id -->
+                <input type="hidden" id="userid" name="userid" value="<?= intval($_SESSION["user_id"]); ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"  required>
             </div>
             
             <button type="submit" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center gap-x-3" name="submit">Tambah Mahasiswa</button>

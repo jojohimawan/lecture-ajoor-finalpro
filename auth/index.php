@@ -35,6 +35,7 @@
         // create session if password verified
         $_SESSION["login"] = true;
         $_SESSION["loggeduser"] = $row["username"];
+        $_SESSION["user_id"] = intval($row["user_id"]);
 
         // redirect if password verified
         header("Location: ./../index.php");
