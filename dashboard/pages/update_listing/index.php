@@ -8,6 +8,8 @@
     require_once __DIR__ . "./../../../php/func/index.php";
     
     // get needed data
+    $id = $_GET["produk_id"];
+    $row = queryRead("SELECT * FROM produk WHERE produk_id = $id");
     $categories = queryReadKategori();
 
     // handle create produk
@@ -54,41 +56,11 @@
     <div class="h-full px-3 py-8 overflow-y-auto bg-white border-r">
         <ul class="font-medium">
         <li>
-                <a href="./../../" class="flex items-center p-5 text-slate-500 rounded-lg hover:bg-slate-100 mb-2">
-                <svg aria-hidden="true" class="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
-                <span class="ml-3">Listing Produk</span>
-                </a>
-            </li>
-            <li>
-                <a href="./../" class="flex items-center p-5 text-slate-500 rounded-lg hover:bg-slate-100 mb-2">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-500 transition duration-75">
-                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
-                </svg>
-                <span class="ml-3">Transaksi</span>
-                </a>
-            </li>
-            <li>
-                <a href="./../" class="flex items-center p-5 text-slate-500 rounded-lg hover:bg-slate-100 mb-2">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-500 transition duration-75">
-                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
-                </svg>
-                <span class="ml-3">Manajemen Transaksi</span>
-                </a>
-            </li>
-            <li>
                 <a href="#" class="flex items-center p-5 text-white rounded-lg hover:bg-green-700 bg-green-600 mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-6 h-6 text-gray-500">
                     <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
                 </svg>
-                <span class="ml-3">Buat Listing</span>
-                </a>
-            </li>
-            <li>
-                <a href="./../../../auth/logout" class="flex items-center p-5 text-red-500 rounded-lg bg-red-50">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-                </svg>
-                <span class="flex-1 ml-3 whitespace-nowrap">Logout</span>
+                <span class="ml-3">Update Listing</span>
                 </a>
             </li>
         </ul>
@@ -109,38 +81,16 @@
     </aside>
 
     <div class="py-12 px-24 sm:ml-64">
-        <div class="w-full flex flex-row items-center justify-between p-4 pb-12 mb-12 border-b">
-                <div class="flex flex-col gap-y-2">
-                    <div class="text-3xl text-slate-900 font-semibold">
-                        Tambahkan Listing Produk
-                    </div>
+        <div class="w-full p-4 pb-12 mb-12 border-b">
+            <div class="flex flex-col gap-y-2">
+                <div class="text-lg text-slate-400 font-medium">
+                    Update listing produk:
                 </div>
-                <div class="flex flex-col gap-y-2">
-                    <div class="text-lg text-slate-400 font-medium">
-                        Jumlah Listing
-                    </div>
-                    <div class="text-3xl text-slate-900 font-semibold">
-                        <?= $listingRowcount ?>
-                    </div>
+                <div class="text-3xl text-slate-900 font-semibold">
+                    <?= $row["nama"] ?>
                 </div>
-                <div class="flex flex-col gap-y-2">
-                    <div class="text-lg text-slate-400 font-medium">
-                            Transaksi Tertunda
-                        </div>
-                        <div class="text-3xl text-slate-900 font-semibold">
-                            0
-                        </div>
-                </div>
-                <div class="flex flex-col gap-y-2">
-                    <div class="text-lg text-slate-400 font-medium">
-                        Total Pembelian
-                    </div>
-                    <div class="text-3xl text-slate-900 font-semibold">
-                        0
-                    </div>
-                </div>
-                    
             </div>
+        </div>
 
         <form action="" method="post" class="p-4" enctype="multipart/form-data">
             <div class="mb-6">
@@ -166,7 +116,7 @@
             </div>
             <div class="mb-6">
                 <label for="produk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Produk</label> <!-- nama -->
-                <input type="text" id="produk" name="produk" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                <input type="text" id="produk" name="produk" value="<?= $row['nama'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
             </div>
             <div class="mb-6">
                 <label for="fotoproduk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Thumbnail</label> <!-- foto -->
@@ -178,18 +128,18 @@
             </div>
             <div class="mb-6">
                 <label for="deskripsi" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Deskripsi Produk</label> <!-- deskripsi -->
-                <textarea id="deskripsi" name="deskripsi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full h-[10em] p-2.5" required></textarea>
+                <textarea id="deskripsi" name="deskripsi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full h-[10em] p-2.5" required><?= $row['deskripsi'] ?></textarea>
             </div>
             <div class="mb-6">
                 <label for="harga" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Harga</label> <!-- harga -->
-                <input type="number" id="harga" name="harga" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                <input type="number" id="harga" name="harga" value="<?= $row['harga'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
             </div>
-            <div class="mb-6">
-                <label for="userid" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label> <!-- user id -->
-                <input type="hidden" id="userid" name="userid" value="<?= intval($_SESSION["user_id"]); ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"  required>
+            <div class="mb-6"> <!-- TODO: HANDLE ID -->
+                <label for="produkid" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label> <!-- produk id -->
+                <input type="hidden" id="produkid" name="produkid" value="<?= $id ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"  required>
             </div>
             
-            <button type="submit" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center gap-x-3" name="submit">Buat Listing</button>
+            <button type="submit" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center gap-x-3" name="submit">Edit Listing</button>
         </form>
     </div>
 

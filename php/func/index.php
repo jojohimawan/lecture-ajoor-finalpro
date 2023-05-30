@@ -1,4 +1,7 @@
 <?php
+    // if( !isset($_SESSION["login"]) ) {
+    //     header("Location: ./../auth");
+    // }
 
     require_once __DIR__ . "./../conn/index.php";
 
@@ -13,7 +16,7 @@
         $passwd = password_hash($passwd, PASSWORD_DEFAULT);
 
         // check if uname is registered
-        $check = pg_query($conn, "SELECT username FROM users WHERE username'$username'");
+        $check = pg_query($conn, "SELECT username FROM users WHERE username = '$username'");
         if( pg_fetch_assoc($check) ) {
             echo "<script>
                 alert('Username sudah terdaftar');
@@ -62,7 +65,7 @@
             echo 
                     '<script> 
                     alert("Silahkan upload file gambar")
-                    document.location.href = "./../../dashbord/pages/add_listing"
+                    document.location.href = "./"
                     </script>
                 ';
             return false;
@@ -78,7 +81,7 @@
             echo 
                     '<script> 
                     alert("File harus berupa gambar")
-                    document.location.href = "../index.php"
+                    document.location.href = "./"
                     </script>
                 ';
             return false;
@@ -89,7 +92,7 @@
             echo 
                     '<script> 
                     alert("gambar terlalu besar")
-                    document.location.href = "./../../dashbord/pages/add_listing"
+                    document.location.href = "./"
                     </script>
                 ';
             return false;
@@ -118,7 +121,7 @@
             echo 
                     '<script> 
                     alert("Silahkan upload file valid")
-                    document.location.href = "./../../dashboard/pages/add_listing"
+                    document.location.href = "./"
                     </script>
                 ';
             return false;
@@ -134,7 +137,7 @@
             echo 
                     '<script> 
                     alert("File harus berupa gambar")
-                    document.location.href = "./../../dashboard/pages/add_listing"
+                    document.location.href = "./"
                     </script>
                 ';
             return false;
@@ -145,7 +148,7 @@
             echo 
                     '<script> 
                     alert("file terlalu besar")
-                    document.location.href = "./../../dashboard/pages/add_listing"
+                    document.location.href = "./
                     </script>
                 ';
             return false;
@@ -189,4 +192,70 @@
         // return value as flag whether the query succeed or not
         return pg_affected_rows($result);
     }
+
+    function queryRead($query)
+    {
+        // catch db connection and execute query
+        global $conn;
+        $result = pg_fetch_assoc( pg_query($conn, $query) );
+
+        // return the row fetched
+        return $result;
+    }
+
+    function queryReadListingProduk()
+    {
+        // catch db connection and prepare query
+        global $conn;
+        $query = "SELECT produk.*, kategori.nama AS kategori FROM produk JOIN kategori ON produk.kategori_id = kategori.kategori_id WHERE user_id = '{$_SESSION["user_id"]}'"; // joining produk and kategori to get kategori name inside produk table
+
+        // execute query and store the results in array
+        $result = pg_query($conn, $query);
+        $rows = [];
+        while( $row = pg_fetch_assoc($result) ) {
+            $row['gratis'] = $row['gratis'] === 'true' ? 'freebie' : 'premium'; // convert product type
+            $rows[] = $row;
+            
+        }
+
+        // return the array containing data
+        return $rows;
+    }
+
+    // TODO: HANDLE UPDATE LISTING
+    function queryUpdateListingProduk($data)
+    {
+        // catch db connection and prepare data
+        global $conn;
+        $files = pg_fetch_assoc(pg_query($conn, "SELECT * FROM produk WHERE produk_id = '{$data["userid"]}'"));
+    }
+
+    function deleteListingProduk($id)
+    {
+        // catch db connection
+        global $conn;
+
+        // delete corresponding files from local directory
+        $row = pg_fetch_assoc(pg_query($conn, "SELECT * FROM produk WHERE produk_id = $id"));
+        unlink( __DIR__ . './../../public/img/' . $row['foto'] );
+        unlink( __DIR__ . './../../public/file/' . $row['file_produk'] );
+
+        // execute delete query
+        $result = pg_query($conn, "DELETE FROM produk WHERE produk_id = $id");
+
+        // return value as flag whether the query succeed or not
+        return pg_affected_rows($result);
+    }
+
+    function getRowCount($query)
+    {
+        // catch db connection and execute
+        global $conn;
+        $rowcount = pg_num_rows( pg_query($conn, $query) );
+
+        // return the field count
+        return $rowcount;
+    }
+
+    
 ?>

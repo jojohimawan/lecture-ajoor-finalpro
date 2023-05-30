@@ -59,7 +59,7 @@
                     </a>
 
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Dashboard</a></li>
+                      <li><a class="dropdown-item" href="./dashboard">Dashboard</a></li>
                       <li><a class="dropdown-item" href="#">Transaksi</a></li>
                       <li><a class="dropdown-item text-danger" href="./auth/logout/index.php">Logout</a></li>
                     </ul>

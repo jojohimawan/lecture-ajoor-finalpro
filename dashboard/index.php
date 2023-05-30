@@ -7,6 +7,10 @@
 
     require_once __DIR__ . "./../php/conn/index.php";
     require_once __DIR__ . "./../php/func/index.php";
+
+    $products = queryReadListingProduk();
+    $listingRowcount = getRowCount("SELECT * FROM produk WHERE user_id = '{$_SESSION["user_id"]}'");
+    // var_dump($products); die;
 ?>
 
 <!DOCTYPE html>
@@ -34,11 +38,27 @@
             <li>
                 <a href="#" class="flex items-center p-5 text-white rounded-lg hover:bg-green-700 bg-green-600 mb-2">
                 <svg aria-hidden="true" class="w-6 h-6 text-gray-500" fill="white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
-                <span class="ml-3">Dashboard</span>
+                <span class="ml-3">Listing Produk</span>
                 </a>
             </li>
             <li>
-                <a href="./../forms/buat_kelas.php" class="flex items-center p-5 text-slate-500 rounded-lg hover:bg-slate-100 mb-2">
+                <a href="./pages/" class="flex items-center p-5 text-slate-500 rounded-lg hover:bg-slate-100 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-500 transition duration-75">
+                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
+                </svg>
+                <span class="ml-3">Transaksi</span>
+                </a>
+            </li>
+            <li>
+                <a href="./pages/" class="flex items-center p-5 text-slate-500 rounded-lg hover:bg-slate-100 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-500 transition duration-75">
+                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
+                </svg>
+                <span class="ml-3">Manajemen Transaksi</span>
+                </a>
+            </li>
+            <li>
+                <a href="./pages/add_listing" class="flex items-center p-5 text-slate-500 rounded-lg hover:bg-slate-100 mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-500">
                     <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
                 </svg>
@@ -46,15 +66,7 @@
                 </a>
             </li>
             <li>
-                <a href="./../forms/tambah_mhs.php" class="flex items-center p-5 text-slate-500 rounded-lg hover:bg-slate-100 mb-2">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-500 transition duration-75">
-                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
-                </svg>
-                <span class="ml-3">Tambah Mahasiswa</span>
-                </a>
-            </li>
-            <li>
-                <a href="./../auth/logout.php" class="flex items-center p-5 text-red-500 rounded-lg bg-red-50">
+                <a href="./../auth/logout" class="flex items-center p-5 text-red-500 rounded-lg bg-red-50">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
                 </svg>
@@ -71,7 +83,7 @@
                 </button>
             </div>
             <p class="mb-3 text-sm text-green-700">
-                eLearning sisi pengguna dosen memiliki akses untuk membuat kelas dan input serta edit nilai mahasiswa.
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Odio maxime perferendis dolore expedita!
             </p>
             <a class="text-sm text-green-700 underline font-medium hover:text-green-800  " href="#">Turn new navigation off</a>
         </div>
@@ -82,42 +94,41 @@
         <div class="w-full flex flex-row items-center justify-between p-4 pb-12 mb-12 border-b">
             <div class="flex flex-col gap-y-2">
                 <div class="text-lg text-slate-400 font-medium">
-                    Dashboard
+                    Selamat datang,
                 </div>
                 <div class="text-3xl text-slate-900 font-semibold">
-                    User
+                    <?= $_SESSION['loggeduser'] ?>
                 </div>
             </div>
             <div class="flex flex-col gap-y-2">
                 <div class="text-lg text-slate-400 font-medium">
-                    Lorem
+                    Jumlah Listing
                 </div>
                 <div class="text-3xl text-slate-900 font-semibold">
-                    Ipsum
+                    <?= $listingRowcount ?>
                 </div>
             </div>
             <div class="flex flex-col gap-y-2">
                 <div class="text-lg text-slate-400 font-medium">
-                        Lorem
+                        Transaksi Tertunda
                     </div>
                     <div class="text-3xl text-slate-900 font-semibold">
-                        Ipsum
+                        0
                     </div>
             </div>
             <div class="flex flex-col gap-y-2">
                 <div class="text-lg text-slate-400 font-medium">
-                        Lorem
-                    </div>
-                    <div class="text-3xl text-slate-900 font-semibold">
-                        Ipsum
-                    </div>
+                    Total Pembelian
+                </div>
+                <div class="text-3xl text-slate-900 font-semibold">
+                    0
+                </div>
             </div>
-                
                 
         </div>
 
         <div class="text-2xl text-slate-900 font-semibold mb-8">
-            Daftar Mahasiswa yang Diampu:
+            Daftar Listing Produk
         </div>
 
         <div class="table-read bg-white p-5 rounded-lg">
@@ -129,7 +140,7 @@
                                 Kategori
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Gratis
+                                Tipe
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Nama
@@ -152,42 +163,44 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="bg-white border-b hover:bg-green-50">
+                        <?php foreach($products as $prod) : ?>
+                            <tr class="bg-white border-b hover:bg-green-50">
                             <td class="px-6 py-4 font-medium text-base text-slate-500">
-                                Lorem
+                                <?= $prod["kategori"] ?>
                             </td>
                             <td class="px-6 py-4 font-medium text-base text-slate-500">
-                                Lorem
+                                <?= $prod["gratis"] ?>
                             </td>
                             <td class="px-6 py-4 font-medium text-base text-slate-500">
-                                Lorem
+                                <?= $prod["nama"] ?>
                             </td>
                             <td class="px-6 py-4 font-medium text-base text-slate-500">
-                                Lorem
-                            </td>
-                            </td>
-                            <td class="px-6 py-4 font-medium text-base text-slate-500">
-                                Lorem
+                                <img src="./../public/img/<?= $prod['foto'] ?>" alt="Image">
                             </td>
                             </td>
                             <td class="px-6 py-4 font-medium text-base text-slate-500">
-                                Lorem
+                                <?= $prod["file_produk"] ?>
                             </td>
                             </td>
                             <td class="px-6 py-4 font-medium text-base text-slate-500">
-                                Lorem
+                                <?= $prod["deskripsi"] ?>
+                            </td>
+                            </td>
+                            <td class="px-6 py-4 font-medium text-base text-slate-500">
+                                <?= $prod["harga"] ?>
                             </td>
                             <td class="px-6 py-4 font-medium text-base text-slate-500 flex flex-row gap-x-2">
-                                <a href="./../forms/update_mhs.php?id_km=<?= $enr['id_km']?>" type="button" class="flex gap-x-2 items-center justify-center focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ">Edit <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                <a href="./pages/update_listing?produk_id=<?= $prod["produk_id"] ?>" type="button" class="flex gap-x-2 items-center justify-center focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ">Edit <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
                                         <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
                                         </svg>
                                 </a>
-                                <a href="./../forms/delete_mhs.php?id_km=<?= $enr["id_km"] ?>" onclick="return confirm('Yakin menghapus?')" type="button" class="flex gap-x-2 items-center focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Delete <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                <a href="./pages/delete_listing?produk_id=<?= $prod["produk_id"] ?>" onclick="return confirm('Yakin menghapus?')" type="button" class="flex gap-x-2 items-center focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Delete <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
                                     <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z" clip-rule="evenodd" />
                                         </svg>
                                 </a>
                             </td>
-                        </tr>
+                            </tr>
+                        <?php endforeach; ?>
                         <tbody>
                 </table>
             </div>
