@@ -8,7 +8,7 @@
     require_once __DIR__ . "./../php/conn/index.php";
     require_once __DIR__ . "./../php/func/index.php";
 
-    $products = queryReadListingProduk();
+    $products = queryReadListingProduk("SELECT produk.*, kategori.nama AS kategori FROM produk JOIN kategori ON produk.kategori_id = kategori.kategori_id WHERE user_id = '{$_SESSION["user_id"]}'");
     $listingRowcount = getRowCount("SELECT * FROM produk WHERE user_id = '{$_SESSION["user_id"]}'");
     // var_dump($products); die;
 ?>

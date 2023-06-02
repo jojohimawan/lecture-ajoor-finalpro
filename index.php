@@ -37,7 +37,7 @@
                 <a class="nav-link active" href="#">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="kategori.html">UI Kit</a>
+                <a class="nav-link" href="./pages/browse">Jelajah</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="premium.html">Premium</a>

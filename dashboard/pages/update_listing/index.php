@@ -14,20 +14,23 @@
 
     // handle create produk
     if( isset($_POST["submit"]) ) {
-        if(queryCreateProduk($_POST) > 0) {
-            echo 
-                '<script> 
-                alert("Sukses menambah produk")
-                </script>
-            ';
-        } else {
-            echo 
-                '<script> 
-                alert("Gagal menambah produk")
-                </script>
-            ';
-        }
+        queryUpdateListingProduk($_POST);
+        // if(queryUpdateListingProduk($_POST) > 0) {
+        //     echo 
+        //         '<script> 
+        //         alert("Sukses menambah produk")
+        //         </script>
+        //     ';
+        // } else {
+        //     echo 
+        //         '<script> 
+        //         alert("Gagal menambah produk")
+        //         </script>
+        //     ';
+        // }
     }
+
+    
 
     $listingRowcount = getRowCount("SELECT * FROM produk WHERE user_id = '{$_SESSION["user_id"]}'");
 
@@ -95,7 +98,7 @@
         <form action="" method="post" class="p-4" enctype="multipart/form-data">
             <div class="mb-6">
                 <label for="kategori" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kategori</label> <!-- kategori -->
-                <select type="text" id="kategori" name="kategori" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                <select type="text" id="kategori" name="kategori" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                     <?php foreach ($categories as $cat) : ?>
                     <option class="text-base" value=<?= $cat['kategori_id'] ?> ><?= $cat['nama']?></option>
                     <?php endforeach; ?>
@@ -116,23 +119,23 @@
             </div>
             <div class="mb-6">
                 <label for="produk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Produk</label> <!-- nama -->
-                <input type="text" id="produk" name="produk" value="<?= $row['nama'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                <input type="text" id="produk" name="produk" value="<?= $row['nama'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" >
             </div>
             <div class="mb-6">
                 <label for="fotoproduk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Thumbnail</label> <!-- foto -->
-                <input type="file" id="fotoproduk" name="fotoproduk" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                <input type="file" id="fotoproduk" name="fotoproduk" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             </div>
             <div class="mb-6">
                 <label for="fileproduk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">File Produk</label> <!-- file -->
-                <input type="file" id="fileproduk" name="fileproduk" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                <input type="file" id="fileproduk" name="fileproduk" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             </div>
             <div class="mb-6">
                 <label for="deskripsi" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Deskripsi Produk</label> <!-- deskripsi -->
-                <textarea id="deskripsi" name="deskripsi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full h-[10em] p-2.5" required><?= $row['deskripsi'] ?></textarea>
+                <textarea id="deskripsi" name="deskripsi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full h-[10em] p-2.5"><?= $row['deskripsi'] ?></textarea>
             </div>
             <div class="mb-6">
                 <label for="harga" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Harga</label> <!-- harga -->
-                <input type="number" id="harga" name="harga" value="<?= $row['harga'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                <input type="number" id="harga" name="harga" value="<?= $row['harga'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             </div>
             <div class="mb-6"> <!-- TODO: HANDLE ID -->
                 <label for="produkid" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label> <!-- produk id -->

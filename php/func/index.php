@@ -203,17 +203,16 @@
         return $result;
     }
 
-    function queryReadListingProduk()
+    function queryReadListingProduk($query)
     {
-        // catch db connection and prepare query
+        // catch db connection]
         global $conn;
-        $query = "SELECT produk.*, kategori.nama AS kategori FROM produk JOIN kategori ON produk.kategori_id = kategori.kategori_id WHERE user_id = '{$_SESSION["user_id"]}'"; // joining produk and kategori to get kategori name inside produk table
 
         // execute query and store the results in array
         $result = pg_query($conn, $query);
         $rows = [];
         while( $row = pg_fetch_assoc($result) ) {
-            $row['gratis'] = $row['gratis'] === 'true' ? 'freebie' : 'premium'; // convert product type
+            $row['gratis'] = $row['gratis'] === 't' ? 'freebie' : 'premium'; // convert product type
             $rows[] = $row;
             
         }
@@ -227,7 +226,9 @@
     {
         // catch db connection and prepare data
         global $conn;
-        $files = pg_fetch_assoc(pg_query($conn, "SELECT * FROM produk WHERE produk_id = '{$data["userid"]}'"));
+        $files = pg_fetch_assoc(pg_query($conn, "SELECT * FROM produk WHERE produk_id = '{$data["produkid"]}'"));
+
+        return $files;
     }
 
     function deleteListingProduk($id)
