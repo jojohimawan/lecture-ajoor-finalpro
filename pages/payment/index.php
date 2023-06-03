@@ -1,16 +1,38 @@
 <?php
   session_start();
+  if( !isset($_SESSION["login"]) ) {
+    header("Location:./../../auth");
+  }
 
   require_once __DIR__ . "./../../php/conn/index.php";
   require_once __DIR__ . "./../../php/func/index.php";
 
   // get produk id from url
-  $id = $_GET['id'];
+  $id = intval($_GET['id']);
+  
 
   // prepare essential data
   $product = queryRead("SELECT produk.*, kategori.nama AS kategori FROM produk JOIN kategori ON produk.kategori_id = kategori.kategori_id WHERE produk_id = $id");
   $product['gratis'] = $product['gratis'] === 't' ? 'freebie' : 'premium';
-  $benefit = $product['gratis'] == 'freebie' ? 'freebie-benefit-list-disabled' : '';
+
+  // execute query
+  if( isset($_POST["checkout"]) ) {
+    if(queryCreateTransaksiPremium($_POST) > 0) {
+        echo 
+                '<script> 
+                alert("Sukses checkout")
+                document.location.href = "./../success_checkout.html"
+                </script>
+        ';
+    } else {
+        echo 
+                '<script> 
+                alert("Gagal checkout")
+                document.location.href = "./../success_checkout.html"
+                </script>
+        ';
+    }
+  }
   
 ?>
 
@@ -84,19 +106,16 @@
       </nav>
     <!-- Navbar End -->
 
-    <!-- Breadcrumb -->
-    <section class="<?= $product['gratis'] ?>-detail-bk mt-3 mb-5 p-4">
-          <div class="container">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb m-0">
-                  <li class="breadcrumb-item h5 bk-freebie"><a href="#">Home</a></li>
-                  <li class="breadcrumb-item h5 bk-freebie"><a href="#"><?= $product['kategori'] ?></a></li>
-                  <li class="breadcrumb-item h5 active bk-freebie-aktif" aria-current="page"><?= $product['nama'] ?></li>
-                </ol>
-              </nav>
-          </div>
-    </section>
-    <!-- Breadcrumb End -->
+    <!-- Header -->
+    <section class="uikit-header mt-5 mb-5 p-5">
+        <div class="container">
+            <div class="text-center">
+                <h1 class="display-5 fw-bold lh-1 mb-3">Checkout</h1>
+                <p class="lead">Konfirmasi Transaksi Anda</p>
+            </div>
+        </div>
+    </section>  
+    <!-- Header -->
 
     <!-- Product Detail -->
     <section class="<?= $product['gratis'] ?>-product mt-5 mb-5 p-5">
@@ -117,9 +136,29 @@
                           <h2 class="fw-bold mb-2 <?= $product['gratis'] ?>-card-title"><?= $product['nama'] ?></h2>
                           <h2 class="mb-5 <?= $product['gratis'] ?>-card-subtitle"><?= $product['kategori'] ?></h2>
                           <h2 class="mb-5 fw-bold <?= $product['gratis'] ?>-card-price">IDR <?= $product['harga'] ?></h2>
-                          <a href="./../payment/index.php?id=<?= $product['produk_id'] ?>" class="card-link d-grid mb-5">
-                              <button class="btn btn-success freebie-card-dl-btn">BELI</button>
-                          </a>
+                          <form action="" method="post" enctype="multipart/form-data">
+                            <div class="mb-5">
+                                <?php if($product['gratis'] === 'premium') : ?>
+                                <label for="foto" class="form-label">Upload Pembayaran</label>
+                                <input type="file" name="foto" placeholder="Bukti dalam bentuk foto" class="form-control" id="foto">
+                                <?php else : ?>
+                                <label for="foto" class="form-label">Upload Pembayaran</label>
+                                <input type="hidden" name="foto" value="" placeholder="Bukti dalam bentuk foto" class="form-control" id="foto">
+                                <?php endif; ?>
+                            </div>
+                            <div class="mb-5">
+                                <input type="hidden" name="produkid" value="<?= $id ?>" class="form-control" id="produkid">
+                            </div>
+                            <div class="mb-5">
+                                <input type="hidden" name="userid" value="<?= $_SESSION["user_id"] ?>" class="form-control" id="userid">
+                            </div>
+                            <div class="mb-5">
+                                <input type="hidden" name="harga" value=" <?= $product['harga'] ?>" class="form-control" id="harga">
+                            </div>
+                            <div class="d-grid mb-5">
+                                <button type="submit" name="checkout" class="btn btn-success freebie-card-dl-btn w-full">CHECKOUT</button>
+                            </div>
+                          </form>
                           <a href="dokumentasi.html" class="freebie-card-docs text-center">
                               <h5 class="">Pelajari Lisensi Produk</h5>
                           </a>
@@ -130,31 +169,6 @@
     </section>
     <!-- Product Detail End -->
 
-    <!-- Benefit -->
-    <section class="freebie-benefit mt-5 p-5">
-        <div class="container">
-            <div class="row mb-3">
-                <h5 class="fw-bold mx-start freebie-benefit-title">Benefit Aset <?= $product['gratis'] ?></h5>
-            </div>
-            <div class="row">
-                <div class="col-lg-6 col-sm-1">
-                  <ul class="list-group freebie-benefit-list">
-                    <li class="list-group-item ps-0"><img src="./../../assets/Tick Square.png" alt=""><p class="ms-2">Project Master</p></li>
-                    <li class="list-group-item ps-0"><img src="./../../assets/Tick Square.png" alt=""><p class="ms-2">Quick Start Guide</p></li>
-                    <li class="list-group-item ps-0"><img src="./../../assets/Tick Square.png" alt=""><p class="ms-2">Ready to Use</p></li>
-                  </ul>
-                </div>
-                <div class="col-lg-6 col-sm-1">
-                  <ul class="list-group freebie-benefit-list">
-                    <li class="list-group-item ps-0"><img src="./../../assets/Tick Square.png" alt=""><p class="ms-2 <?= $benefit ?>">Grid System Design</p></li>
-                    <li class="list-group-item ps-0"><img src="./../../assets/Tick Square.png" alt=""><p class="ms-2 <?= $benefit ?>">Private Group (Design Consulting)</p></li>
-                    <li class="list-group-item ps-0"><img src="./../../assets/Tick Square.png" alt=""><p class="ms-2 <?= $benefit ?>">Free Design Updates</p></li>
-                  </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Benefit End -->
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>

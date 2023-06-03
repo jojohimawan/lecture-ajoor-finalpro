@@ -55,10 +55,10 @@
 
     function handleUploadGambar()
     {
-        $nama_berkas = $_FILES['fotoproduk']['name'];
-        $ukuran_berkas = $_FILES['fotoproduk']['size'];
-        $error = $_FILES['fotoproduk']['error'];
-        $tmpname = $_FILES['fotoproduk']['tmp_name'];
+        $nama_berkas = $_FILES['foto']['name'];
+        $ukuran_berkas = $_FILES['foto']['size'];
+        $error = $_FILES['foto']['error'];
+        $tmpname = $_FILES['foto']['tmp_name'];
 
         // if error found
         if( $error === 4) {
@@ -229,6 +229,25 @@
         $files = pg_fetch_assoc(pg_query($conn, "SELECT * FROM produk WHERE produk_id = '{$data["produkid"]}'"));
 
         return $files;
+    }
+
+    function queryCreateTransaksiPremium($data)
+    {
+        // catch db connection and prepare data
+        global $conn;
+        $total_harga = intval($data["harga"]);
+        $bukti_bayar = $total_harga === 0 ? $data["foto"] : handleUploadGambar(); // if product is free, no need to upload payment
+        $user_id = intval($data['userid']);
+        $status = $total_harga === 0 ? "ok" : "pending"; // if product is free, then the transaction is ok (no need seller's approval);
+        $produk_id = $data["produkid"];
+
+        // prepare query
+        $query = "INSERT INTO transaksi(user_id, status, bukti_bayar, total_harga, produk_id) VALUES ($user_id, '$status', '$bukti_bayar', $total_harga, $produk_id)";
+        // execute query
+        $result = pg_query($conn, $query);
+
+        // return value as flag whether the query succeed or not
+        return pg_affected_rows($result);
     }
 
     function deleteListingProduk($id)
