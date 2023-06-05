@@ -1,3 +1,12 @@
+<?php
+  session_start();
+
+  if( !isset($_SESSION["login"]) ) {
+    header("Location: ./../../auth");
+  }
+
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -9,8 +18,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <!-- CSS -->
-    <link rel="icon"  href="./Assets/favicon.jpg" />
-    <link rel="stylesheet" href="./CSS/style.css">
+    <link rel="icon"  href="./../../assets/favicon.jpg" />
+    <link rel="stylesheet" href="./../../css/style.css">
     <title>Success Checkout!</title>
   </head>
   <body>
@@ -19,13 +28,13 @@
         <div class="row align-items-center">
             <div class="col align-self-center">
             <div class="text-center">
-                <img src="./Assets/illustration_checkout.png" class="img-fluid text-center sukses-co mb-5" alt="">
+                <img src="./../../assets/illustration_checkout.png" class="img-fluid text-center sukses-co mb-5" alt="">
             </div>          
             <h2 class="fw-bold mb-2 freebie-card-title mb-2 text-center">Checkout Berhasil</h2>
             <p class="text-center mb-5">Silahkan mulai membuat project terbaik anda<br>
                 dengan aset dari kami.</p>
             </div>
-            <a href="home.html" class="text-center co-home">
+            <a href="./../../" class="text-center co-home">
                 <button class="btn" type="submit">HOME</button>
              </a>
      </div>

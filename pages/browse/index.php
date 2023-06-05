@@ -76,7 +76,7 @@
                     </ul>
                   </div>
                 <?php else : ?> <!-- if not, show cta instead -->
-                  <a href="./auth" class="nav-item">
+                  <a href="./../../auth" class="nav-item">
                   <button class="btn" type="submit">Masuk</button>
                   </a>
                 <?php endif; ?>
