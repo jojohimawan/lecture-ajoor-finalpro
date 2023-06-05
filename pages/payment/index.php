@@ -21,14 +21,14 @@
         echo 
                 '<script> 
                 alert("Sukses checkout")
-                document.location.href = "./../success_checkout.html"
+                document.location.href = "./../../pages/success_checkout"
                 </script>
         ';
     } else {
         echo 
                 '<script> 
                 alert("Gagal checkout")
-                document.location.href = "./../success_checkout.html"
+                document.location.href = "./../browse"
                 </script>
         ';
     }

@@ -203,6 +203,23 @@
         return $result;
     }
 
+    function queryReadAll($query)
+    {
+        // catch db connection]
+        global $conn;
+
+        // execute query and store the results in array
+        $result = pg_query($conn, $query);
+        $rows = [];
+        while( $row = pg_fetch_assoc($result) ) {
+            $rows[] = $row;
+            
+        }
+
+        // return the array containing data
+        return $rows;
+    }
+
     function queryReadListingProduk($query)
     {
         // catch db connection]
@@ -243,6 +260,20 @@
 
         // prepare query
         $query = "INSERT INTO transaksi(user_id, status, bukti_bayar, total_harga, produk_id) VALUES ($user_id, '$status', '$bukti_bayar', $total_harga, $produk_id)";
+        // execute query
+        $result = pg_query($conn, $query);
+
+        // return value as flag whether the query succeed or not
+        return pg_affected_rows($result);
+    }
+
+    function queryApproveTransaksi($transaksi_id)
+    {
+        // catch db connection
+        global $conn;
+        
+        // prepare query
+        $query = "UPDATE transaksi SET status = 'ok' WHERE transaksi_id = $transaksi_id";
         // execute query
         $result = pg_query($conn, $query);
 
