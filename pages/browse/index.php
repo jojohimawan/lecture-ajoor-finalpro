@@ -4,7 +4,16 @@
   require_once __DIR__ . "./../../php/conn/index.php";
   require_once __DIR__ . "./../../php/func/index.php";
 
-  $products = queryReadListingProduk("SELECT produk.*, kategori.nama AS kategori FROM produk JOIN kategori ON produk.kategori_id = kategori.kategori_id");
+  if(isset($_SESSION["login"])) {
+    // get user id
+    $userid = intval($_SESSION['user_id']);
+
+    // show all listed products except user's listing
+    $products = queryReadListingProduk("SELECT produk.*, kategori.nama AS kategori FROM produk JOIN kategori ON produk.kategori_id = kategori.kategori_id WHERE produk.user_id != $userid");
+  } else {
+      // show all listed products
+      $products = queryReadListingProduk("SELECT produk.*, kategori.nama AS kategori FROM produk JOIN kategori ON produk.kategori_id = kategori.kategori_id");
+  }
   
 ?>
 
@@ -63,7 +72,7 @@
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="./dashboard">Dashboard</a></li>
                       <li><a class="dropdown-item" href="#">Transaksi</a></li>
-                      <li><a class="dropdown-item text-danger" href="./auth/logout/index.php">Logout</a></li>
+                      <li><a class="dropdown-item text-danger" href="./../../auth/logout">Logout</a></li>
                     </ul>
                   </div>
                 <?php else : ?> <!-- if not, show cta instead -->
