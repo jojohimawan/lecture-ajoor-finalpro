@@ -1,3 +1,12 @@
+<?php
+    session_start();
+
+    require_once __DIR__ . "./../../php/conn/index.php";
+    require_once __DIR__ . "./../../php/func/index.php";
+
+
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -9,8 +18,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <!-- CSS -->
-    <link rel="icon"  href="./Assets/favicon.jpg" />
-    <link rel="stylesheet" href="./CSS/style.css">
+    <link rel="icon"  href="./../../assets/favicon.jpg" />
+    <link rel="stylesheet" href="./../../css/style.css">
     <title>Dokumentasi</title>
   </head>
   <body>
@@ -18,7 +27,7 @@
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
           <a class="navbar-brand" href="#">
-              <img src="./Assets/Logo.jpg" alt="" width="48" height="60">
+              <img src="./../../assets/Logo.jpg" alt="" width="48" height="60">
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -26,27 +35,32 @@
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ms-auto text-end">
               <li class="nav-item">
-                <a class="nav-link" href="home.html">Home</a>
+                <a class="nav-link" href="./../../">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="kategori.html">UI Kit</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="premium.html">Premium</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="freebie.html">Freebie</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="success_checkout.html">Checkout</a>
+                <a class="nav-link" href="./../browse">Jelajah</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" href="#">Dokumentasi</a>
               </li>
               <li class="nav-item">
-                <a href="login.html" class="nav-item">
-                <button class="btn" type="submit">Masuk</button>
-                </a>
+                <?php if( isset($_SESSION["login"]) ) : ?> <!-- if logged in, show username -->
+                  <div class="dropdown">
+                    <a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Halo, <?= $_SESSION["loggeduser"] ?>
+                    </a>
+
+                    <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="./../../dashboard">Dashboard</a></li>
+                      <li><a class="dropdown-item" href="./../../dashboard/pages/transaksi">Transaksi</a></li>
+                      <li><a class="dropdown-item text-danger" href="./../../auth/logout">Logout</a></li>
+                    </ul>
+                  </div>
+                <?php else : ?> <!-- if not, show cta instead -->
+                  <a href="./../../auth" class="nav-item">
+                  <button class="btn" type="submit">Masuk</button>
+                  </a>
+                <?php endif; ?>
               </li>
             </ul>
           </div>
@@ -120,12 +134,12 @@
                     <h1 class="mb-4 fw-bold">IDR 0,-</h1>
                     <h5 class="mb-1">Benefit</h5>
                     <ul class="list-group freebie-benefit-list">
-                      <li class="list-group-item ps-0"><img src="./Assets/Tick Square.png" alt=""><p class="ms-2 fw-normal">Project Master</p></li>
-                      <li class="list-group-item ps-0"><img src="./Assets/Tick Square.png" alt=""><p class="ms-2 fw-normal">Quick Start Guide</p></li>
-                      <li class="list-group-item ps-0"><img src="./Assets/Tick Square.png" alt=""><p class="ms-2 fw-normal">Ready to Use</p></li>
-                      <li class="list-group-item ps-0"><img src="./Assets/Tick Square Disabled.png" alt=""><p class="ms-2 fw-normal freebie-benefit-list-disabled">Grid System Design</p></li>
-                    <li class="list-group-item ps-0"><img src="./Assets/Tick Square Disabled.png" alt=""><p class="ms-2 fw-normal freebie-benefit-list-disabled">Private Group (Design Consulting)</p></li>
-                    <li class="list-group-item ps-0"><img src="./Assets/Tick Square Disabled.png" alt=""><p class="ms-2 fw-normal freebie-benefit-list-disabled">Free Design Updates</p></li>
+                      <li class="list-group-item ps-0"><img src="./../../assets/Tick Square.png" alt=""><p class="ms-2 fw-normal">Project Master</p></li>
+                      <li class="list-group-item ps-0"><img src="./../../assets/Tick Square.png" alt=""><p class="ms-2 fw-normal">Quick Start Guide</p></li>
+                      <li class="list-group-item ps-0"><img src="./../../assets/Tick Square.png" alt=""><p class="ms-2 fw-normal">Ready to Use</p></li>
+                      <li class="list-group-item ps-0"><img src="./../../assets/Tick Square Disabled.png" alt=""><p class="ms-2 fw-normal freebie-benefit-list-disabled">Grid System Design</p></li>
+                    <li class="list-group-item ps-0"><img src="./../../assets/Tick Square Disabled.png" alt=""><p class="ms-2 fw-normal freebie-benefit-list-disabled">Private Group (Design Consulting)</p></li>
+                    <li class="list-group-item ps-0"><img src="./../../assets/Tick Square Disabled.png" alt=""><p class="ms-2 fw-normal freebie-benefit-list-disabled">Free Design Updates</p></li>
                     </ul>
                   </div>
                 </div>
@@ -135,15 +149,15 @@
                   <div class="card-body">
                     <button class="btn btn-primary premium mb-5">PREMIUM</button>
                     <h5 class="mb-1">Mulai dari</h5>
-                    <h1 class="mb-4 fw-bold">IDR 250K,-</h1>
+                    <h1 class="mb-4 fw-bold">IDR 10K,-</h1>
                     <h5 class="mb-1">Benefit</h5>
                     <ul class="list-group freebie-benefit-list">
-                      <li class="list-group-item ps-0"><img src="./Assets/Tick Square.png" alt=""><p class="ms-2 fw-normal">Project Master</p></li>
-                      <li class="list-group-item ps-0"><img src="./Assets/Tick Square.png" alt=""><p class="ms-2 fw-normal">Quick Start Guide</p></li>
-                      <li class="list-group-item ps-0"><img src="./Assets/Tick Square.png" alt=""><p class="ms-2 fw-normal">Ready to Use</p></li>
-                      <li class="list-group-item ps-0"><img src="./Assets/Tick Square.png" alt=""><p class="ms-2 fw-normal">Grid System Design</p></li>
-                    <li class="list-group-item ps-0"><img src="./Assets/Tick Square.png" alt=""><p class="ms-2 fw-normal">Private Group (Design Consulting)</p></li>
-                    <li class="list-group-item ps-0"><img src="./Assets/Tick Square.png" alt=""><p class="ms-2 fw-normal">Free Design Updates</p></li>
+                      <li class="list-group-item ps-0"><img src="./../../assets/Tick Square.png" alt=""><p class="ms-2 fw-normal">Project Master</p></li>
+                      <li class="list-group-item ps-0"><img src="./../../assets/Tick Square.png" alt=""><p class="ms-2 fw-normal">Quick Start Guide</p></li>
+                      <li class="list-group-item ps-0"><img src="./../../assets/Tick Square.png" alt=""><p class="ms-2 fw-normal">Ready to Use</p></li>
+                      <li class="list-group-item ps-0"><img src="./../../assets/Tick Square.png" alt=""><p class="ms-2 fw-normal">Grid System Design</p></li>
+                    <li class="list-group-item ps-0"><img src="./../../assets/Tick Square.png" alt=""><p class="ms-2 fw-normal">Private Group (Design Consulting)</p></li>
+                    <li class="list-group-item ps-0"><img src="./../../assets/Tick Square.png" alt=""><p class="ms-2 fw-normal">Free Design Updates</p></li>
                     </ul>
                   </div>
                 </div>

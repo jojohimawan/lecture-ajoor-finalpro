@@ -36,7 +36,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
-          <a class="navbar-brand" href="home.html">
+          <a class="navbar-brand" href="#">
               <img src="./../../assets/Logo.jpg" alt="" width="48" height="60">
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,33 +45,24 @@
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ms-auto text-end">
               <li class="nav-item">
-                <a class="nav-link" href="./../../index.php">Home</a>
+                <a class="nav-link" href="./../../">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" href="#">Jelajah</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="premium.html">Premium</a>
+                <a class="nav-link" href="./../doc">Dokumentasi</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="freebie.html">Freebie</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="success_checkout.html">Checkout</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="dokumentasi.html">Dokumentasi</a>
-              </li>
-              <li class="nav-item">
-              <?php if( isset($_SESSION["login"]) ) : ?> <!-- if logged in, show username -->
+                <?php if( isset($_SESSION["login"]) ) : ?> <!-- if logged in, show username -->
                   <div class="dropdown">
                     <a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       Halo, <?= $_SESSION["loggeduser"] ?>
                     </a>
 
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="./dashboard">Dashboard</a></li>
-                      <li><a class="dropdown-item" href="#">Transaksi</a></li>
+                      <li><a class="dropdown-item" href="./../../dashboard">Dashboard</a></li>
+                      <li><a class="dropdown-item" href="./../../dashboard/pages/transaksi">Transaksi</a></li>
                       <li><a class="dropdown-item text-danger" href="./../../auth/logout">Logout</a></li>
                     </ul>
                   </div>
@@ -80,7 +71,6 @@
                   <button class="btn" type="submit">Masuk</button>
                   </a>
                 <?php endif; ?>
-                </a>
               </li>
             </ul>
           </div>

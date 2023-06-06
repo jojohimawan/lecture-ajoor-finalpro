@@ -40,16 +40,7 @@
                 <a class="nav-link" href="./pages/browse">Jelajah</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="premium.html">Premium</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="freebie.html">Freebie</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="success_checkout.html">Checkout</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="dokumentasi.html">Dokumentasi</a>
+                <a class="nav-link" href="./pages/doc">Dokumentasi</a>
               </li>
               <li class="nav-item">
                 <?php if( isset($_SESSION["login"]) ) : ?> <!-- if logged in, show username -->
