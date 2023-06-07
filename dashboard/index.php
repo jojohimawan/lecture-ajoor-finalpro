@@ -12,7 +12,7 @@
     $userid = intval($_SESSION["user_id"]);
 
     // get essential data
-    $products = queryReadListingProduk("SELECT produk.*, kategori.nama AS kategori FROM produk JOIN kategori ON produk.kategori_id = kategori.kategori_id WHERE user_id = '{$_SESSION["user_id"]}' AND aktif = 'TRUE'");
+    $product = queryReadListingProduk("SELECT produk.*, kategori.nama AS kategori FROM produk JOIN kategori ON produk.kategori_id = kategori.kategori_id WHERE user_id = '{$_SESSION["user_id"]}' AND aktif = 'TRUE'");
     $listingRowcount = getRowCount("SELECT * FROM produk WHERE user_id = '{$_SESSION["user_id"]}' AND aktif = 'TRUE'");
     $pendingRowcount = getRowCount("SELECT transaksi.* FROM transaksi JOIN produk ON transaksi.produk_id = produk.produk_id WHERE produk.user_id = $userid AND status ='pending'");
     $transactionRowcount = getRowCount("SELECT transaksi.* FROM transaksi JOIN produk ON transaksi.produk_id = produk.produk_id WHERE transaksi.user_id = $userid");
@@ -176,7 +176,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach($products as $prod) : ?>
+                        <?php foreach($product as $prod) : ?>
                             <tr class="bg-white border-b hover:bg-green-50">
                             <td class="px-6 py-4 font-medium text-base text-slate-500">
                                 <?= $prod["kategori"] ?>
