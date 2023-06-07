@@ -244,9 +244,18 @@
     {
         // catch db connection and prepare data
         global $conn;
-        $files = pg_fetch_assoc(pg_query($conn, "SELECT * FROM produk WHERE produk_id = '{$data["produkid"]}'"));
+        $id = intval($data["produkid"]);
+        $gratis = $data["gratis"] === "t" ? "TRUE" : "FALSE";
+        $deskripsi = htmlspecialchars($data["deskripsi"]);
+        $harga = intval($data["harga"]);
 
-        return $files;
+        // prepare query
+        $query = "UPDATE produk SET gratis = $gratis, deskripsi = '$deskripsi', harga = $harga WHERE produk_id = $id";
+        // execute query
+        $result = pg_query($conn, $query);
+
+        // return value as flag whether the query succeed or not
+        return pg_affected_rows($result);
     }
 
     function queryCreateTransaksiPremium($data)

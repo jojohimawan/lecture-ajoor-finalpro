@@ -9,31 +9,27 @@
     
     // get needed data
     $id = $_GET["produk_id"];
-    $row = queryRead("SELECT * FROM produk WHERE produk_id = $id");
+    $row = queryRead("SELECT produk.*, kategori.nama AS kategori FROM produk JOIN kategori ON produk.kategori_id = kategori.kategori_id WHERE produk_id = $id");
+    $row["gratis"] = $row['gratis'] === 't' ? 'freebie' : 'premium';
     $categories = queryReadKategori();
 
     // handle create produk
     if( isset($_POST["submit"]) ) {
-        queryUpdateListingProduk($_POST);
-        // if(queryUpdateListingProduk($_POST) > 0) {
-        //     echo 
-        //         '<script> 
-        //         alert("Sukses menambah produk")
-        //         </script>
-        //     ';
-        // } else {
-        //     echo 
-        //         '<script> 
-        //         alert("Gagal menambah produk")
-        //         </script>
-        //     ';
-        // }
+        if(queryUpdateListingProduk($_POST) > 0) {
+            echo 
+                '<script> 
+                alert("Sukses update produk")
+                document.location.href = "./../../../dashboard"
+                </script>
+            ';
+        } else {
+            echo 
+                '<script> 
+                alert("Gagal update produk")
+                </script>
+            ';
+        }
     }
-
-    
-
-    $listingRowcount = getRowCount("SELECT * FROM produk WHERE user_id = '{$_SESSION["user_id"]}'");
-
 ?>
 
 <!DOCTYPE html>
@@ -85,7 +81,7 @@
     </aside>
 
     <div class="py-12 px-24 sm:ml-64">
-        <div class="w-full p-4 pb-12 mb-12 border-b">
+        <div class="w-full flex flex-row items-center gap-x-24 p-4 pb-12 mb-12 border-b">
             <div class="flex flex-col gap-y-2">
                 <div class="text-lg text-slate-400 font-medium">
                     Update listing produk:
@@ -94,17 +90,25 @@
                     <?= $row["nama"] ?>
                 </div>
             </div>
+            <div class="flex flex-col gap-y-2">
+                <div class="text-lg text-slate-400 font-medium">
+                    Kategori produk:
+                </div>
+                <div class="text-3xl text-slate-900 font-semibold">
+                    <?= $row["kategori"] ?>
+                </div>
+            </div>
+            <div class="flex flex-col gap-y-2">
+                <div class="text-lg text-slate-400 font-medium">
+                    Tipe produk:
+                </div>
+                <div class="text-3xl text-slate-900 font-semibold">
+                    <?= $row["gratis"] ?>
+                </div>
+            </div>
         </div>
 
         <form action="" method="post" class="p-4" enctype="multipart/form-data">
-            <div class="mb-6">
-                <label for="kategori" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kategori</label> <!-- kategori -->
-                <select type="text" id="kategori" name="kategori" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                    <?php foreach ($categories as $cat) : ?>
-                    <option class="text-base" value=<?= $cat['kategori_id'] ?> ><?= $cat['nama']?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
             <div class="mb-6"> 
                 <p class="mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipe</p> <!-- tipe -->
                 <div class="flex flex-column w-full gap-x-3">
@@ -119,18 +123,6 @@
                 </div>
             </div>
             <div class="mb-6">
-                <label for="produk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Produk</label> <!-- nama -->
-                <input type="text" id="produk" name="produk" value="<?= $row['nama'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" >
-            </div>
-            <div class="mb-6">
-                <label for="fotoproduk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Thumbnail</label> <!-- foto -->
-                <input type="file" id="fotoproduk" name="fotoproduk" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-            </div>
-            <div class="mb-6">
-                <label for="fileproduk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">File Produk</label> <!-- file -->
-                <input type="file" id="fileproduk" name="fileproduk" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-            </div>
-            <div class="mb-6">
                 <label for="deskripsi" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Deskripsi Produk</label> <!-- deskripsi -->
                 <textarea id="deskripsi" name="deskripsi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full h-[10em] p-2.5"><?= $row['deskripsi'] ?></textarea>
             </div>
@@ -138,7 +130,7 @@
                 <label for="harga" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Harga</label> <!-- harga -->
                 <input type="number" id="harga" name="harga" value="<?= $row['harga'] ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             </div>
-            <div class="mb-6"> <!-- TODO: HANDLE ID -->
+            <div class="mb-6">
                 <label for="produkid" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label> <!-- produk id -->
                 <input type="hidden" id="produkid" name="produkid" value="<?= $id ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"  required>
             </div>
