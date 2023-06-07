@@ -177,6 +177,7 @@
         $deskripsi = htmlspecialchars($data["deskripsi"]);
         $harga = $data["harga"];
         $userid = $data["userid"];
+        $aktif = "TRUE";
         
 
         // check for files
@@ -185,7 +186,7 @@
         }
 
         // prepare query
-        $query = "INSERT INTO produk (kategori_id, user_id, gratis, nama, foto, file_produk, deskripsi, harga) VALUES ($kategori, $userid, $gratis, '$namaproduk', '$fotoproduk', '$fileproduk', '$deskripsi', $harga)";
+        $query = "INSERT INTO produk (kategori_id, user_id, gratis, nama, foto, file_produk, deskripsi, harga, aktif) VALUES ($kategori, $userid, $gratis, '$namaproduk', '$fotoproduk', '$fileproduk', '$deskripsi', $harga, $aktif)";
         // execute query
         $result = pg_query($conn, $query);
 
@@ -283,16 +284,15 @@
 
     function deleteListingProduk($id)
     {
-        // catch db connection
+        // catch db connection and prepare data
         global $conn;
+        $aktif = "FALSE";
 
         // delete corresponding files from local directory
         $row = pg_fetch_assoc(pg_query($conn, "SELECT * FROM produk WHERE produk_id = $id"));
-        unlink( __DIR__ . './../../public/img/' . $row['foto'] );
-        unlink( __DIR__ . './../../public/file/' . $row['file_produk'] );
 
         // execute delete query
-        $result = pg_query($conn, "DELETE FROM produk WHERE produk_id = $id");
+        $result = pg_query($conn, "UPDATE produk SET aktif = $aktif WHERE produk_id = $id");
 
         // return value as flag whether the query succeed or not
         return pg_affected_rows($result);

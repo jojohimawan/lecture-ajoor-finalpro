@@ -9,10 +9,10 @@
     $userid = intval($_SESSION['user_id']);
 
     // show all listed products except user's listing
-    $products = queryReadListingProduk("SELECT produk.*, kategori.nama AS kategori FROM produk JOIN kategori ON produk.kategori_id = kategori.kategori_id WHERE produk.user_id != $userid");
+    $products = queryReadListingProduk("SELECT produk.*, kategori.nama AS kategori FROM produk JOIN kategori ON produk.kategori_id = kategori.kategori_id WHERE produk.user_id != $userid AND produk.aktif = 'TRUE'");
   } else {
       // show all listed products
-      $products = queryReadListingProduk("SELECT produk.*, kategori.nama AS kategori FROM produk JOIN kategori ON produk.kategori_id = kategori.kategori_id");
+      $products = queryReadListingProduk("SELECT produk.*, kategori.nama AS kategori FROM produk JOIN kategori ON produk.kategori_id = kategori.kategori_id WHERE produk.aktif = 'TRUE'");
   }
   
 ?>
